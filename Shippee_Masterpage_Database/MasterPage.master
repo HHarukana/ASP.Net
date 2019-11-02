@@ -1,0 +1,60 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Shippee's Snacks</title>
+    <link rel ="stylesheet" type="text/css" href="App_Themes/styles/StyleSheet.css" />
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+
+<body>
+
+    <form id="form1" runat="server">
+
+    <div>
+
+        <div id ="header">
+
+            <a href="~/Default.aspx" runat="server">Home page</a>&nbsp;&nbsp;&nbsp;
+            <a href="~/ContactUs.aspx" runat="server">Contact Us</a>&nbsp;&nbsp;&nbsp;
+            <a href="~/AboutUs.aspx" runat="server">About Us</a>&nbsp;&nbsp;&nbsp;
+            <a href="~/Controls/Default.aspx" runat="server">Admin Login</a>&nbsp;&nbsp;&nbsp;
+            <asp:Button ID="btnLogout2" runat="server" Text="Logout" OnClick="btnLogout2_Click" />
+            
+
+        </div>
+
+
+        <div id ="content" style="display: inline-block">
+
+            <div id="mainContent" >
+                <asp:ContentPlaceHolder id="pageMainContent" runat="server">
+                Page is being worked on
+                </asp:ContentPlaceHolder>
+            </div>
+
+            <div id="sideContent" >
+                <asp:ContentPlaceHolder id="pageSideContent" runat="server">
+                Page is being worked on
+                </asp:ContentPlaceHolder>
+            </div>
+
+        </div>
+
+        <div id="footer">
+
+                
+                Copyright Ian Shippee, iashippee@email.neit.edu, Created by Ian Shippee
+
+        </div>
+
+    </div>
+
+    </form>
+
+</body>
+
+</html>
