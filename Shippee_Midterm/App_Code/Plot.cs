@@ -509,7 +509,7 @@ public class Plot
 
             conn.Open();
 
-            comm.ExecuteNonQuery();
+            intRecords = comm.ExecuteNonQuery();
 
             conn.Close();
         }

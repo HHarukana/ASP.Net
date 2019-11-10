@@ -6,7 +6,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="mainPageContent" Runat="Server">
 
     <h1>Cemetary Plot Pre Order</h1>
-
+    <asp:Label ID="lblPlot_ID" runat="server" />
     <br />
 
     <asp:Label ID="lblcurrDate" runat="server" Text="Current Date: "></asp:Label>
@@ -114,13 +114,13 @@
     
     <br />
     
-    <asp:Button ID="btnAdd" runat="server" Text="Add" />
+    <asp:Button ID="btnAdd" runat="server" Text="Add" OnClick="btnAdd_Click" />
     <br />
     <br />
-    <asp:Button ID="btnUpdate" runat="server" Text="Update" />
+    <asp:Button ID="btnUpdate" runat="server" Text="Update" OnClick="btnUpdate_Click" />
     <br />
     <br />
-    <asp:Button ID="btnDelete" runat="server" Text="Delete" />
+    <asp:Button ID="btnDelete" runat="server" Text="Delete" OnClick="btnDelete_Click" />
     <br />
     <br />
 
