@@ -1,0 +1,79 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Ichabod's Undertaker</title>
+    <link rel ="stylesheet" type="text/css" href="App_Themes/styles/StyleSheet.css" />
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+
+<body>
+
+    <form id="form1" runat="server">
+
+    <div>
+
+        <div id ="header">
+
+                 <asp:Image ID="headLogo" runat="server" ImageUrl="~/Images/headerLogo.png" />
+            
+
+                
+
+        </div>        
+        
+        <div id ="content" style ="display : inline-block">
+
+            <div id="mainContent">
+
+            <asp:ContentPlaceHolder id="mainPageContent" runat="server">
+                <h1>Under Construction</h1>
+            </asp:ContentPlaceHolder>
+
+               <!-- No Content Here just for breaking -->
+
+            </div>
+
+            <div id="sideContent">
+
+            <asp:ContentPlaceHolder id="sidePageContent" runat="server">
+                
+            </asp:ContentPlaceHolder>
+
+                <br />
+                <a href="~/Default.aspx" runat="server">Home page</a>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <a href="~/Buisness.aspx" runat="server">Who Are We?</a>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <a href="~/Controls/Default.aspx" runat="server">Admin Login</a>
+                <br />
+
+            </div>
+
+            <div id="footer">
+
+                <h3>Made by Ian Shippee, Powered by dead batteries</h3>
+
+            </div>
+
+        </div>
+
+        
+    </div>
+
+    </form>
+
+</body>
+
+</html>

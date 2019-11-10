@@ -1,0 +1,89 @@
+﻿#header 
+{
+    width:100%;
+    height: 15%;
+    background-color:#F0EFED;
+
+}
+
+#content
+{
+    
+    width: 100%;  
+    background-color: #5A2132;
+
+}
+
+#mainContent
+{
+
+    display: inline-block;
+    float: right;
+    background-color: #E3AB99; 
+    width: 75%;
+    align-items: center;
+    clear:both;
+    
+    
+
+}
+
+#sidecontent
+{
+
+    width: 25%;
+    background-color :#F1AD48;
+    float: left;
+    display: block;
+    clear:both;
+
+   
+
+}
+
+#footer
+{
+    height: 50px;
+    background-color: #F1AD48;
+    float:none;
+    font-family: Arial;
+    color: white;
+    align-content: center;
+    clear:both;
+
+}
+
+#logo 
+{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+a:link, a:visited
+{
+
+    height: 120px;
+    float:none;
+    font-family: Arial;
+    color: white;
+    align-content: center;
+    font-size:60px;
+    text-decoration: none;
+    
+
+}
+
+
+
+
+img
+{
+
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    
+
+}
