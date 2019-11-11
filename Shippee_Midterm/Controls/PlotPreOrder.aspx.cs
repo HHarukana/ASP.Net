@@ -12,15 +12,26 @@ public partial class PlotPreOrder : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
 
+
         lblPlot_ID.Visible = false;
         string strPlot_ID = "";
         int intPlot_ID = 0;
-        txtcurrDate.Text = DateTime.Now.ToString("MM-dd-yyy");
+        txtcurrDate.Text = DateTime.Now.ToShortDateString();
+
+        if (Session["LoggedIn"] != null && Session["LoggedIn"].ToString() == "TRUE")
+        {
+            //keep them where they are
+        }
+
+        else
+        {
+            Response.Redirect("Default.aspx");
+        }
 
         if ((!IsPostBack) && Request.QueryString["Plot_ID"] != null)
         {
 
-            strPlot_ID = Request.QueryString["Per_ID"].ToString();
+            strPlot_ID = Request.QueryString["Plot_ID"].ToString();
             lblPlot_ID.Text = strPlot_ID;
 
             intPlot_ID = Convert.ToInt32(strPlot_ID);
@@ -32,18 +43,21 @@ public partial class PlotPreOrder : System.Web.UI.Page
             while (dr.Read())
             {
                 txtcurrDate.Text = dr["currDate"].ToString();
-                //are dropdowns done this way?
-                ddcemetary.Text = dr["cemetary"].ToString();
-                txtfirstName.Text = dr["firstNamee"].ToString();
+                ddcemetary.SelectedValue = dr["cemetary"].ToString();
+                txtfirstName.Text = dr["firstName"].ToString();
                 txtmiddleName.Text = dr["middleName"].ToString();
                 txtlastName.Text = dr["lastName"].ToString();
-                ddtitle.Text = dr["title"].ToString();
-                //How do I do Calendar dates here?
-                calDOB.SelectedDate = dr["DOB"].ToDateString();
-                calDOD.SelectedDate = dr["DOD"].ToDateString();
-                checkVet.Text = dr["vet"].ToString();
-                ddbranch.Text = dr["branch"].ToString();
-                ddstone.Text = dr["stone"].ToString();
+                ddtitle.SelectedValue = dr["title"].ToString();
+                txtCalDOB.Text = dr["DOB"].ToString();
+                txtCalDOD.Text = dr["DOD"].ToString();
+
+                if (Convert.ToBoolean(dr["vet"]))
+                {
+                    checkVet.Checked = true;
+                }
+                
+                ddbranch.SelectedValue = dr["branch"].ToString();
+                ddstone.SelectedValue = dr["stone"].ToString();
                 txtnote.Text = dr["note"].ToString();
             }
 
@@ -55,18 +69,19 @@ public partial class PlotPreOrder : System.Web.UI.Page
         }
 
 
-        if (Session["LoggedIn"] != null && Session["LoggedIn"].ToString() == "TRUE")
-        {
-            //keep them where they are
-        }
-
-        else
-        {
-            Response.Redirect("~Controls/Default.aspx");
-        }
+        
     }
 
 
+    protected void calDOB_SelectionChanged(object sender, EventArgs e)
+    {
+        txtCalDOB.Text = calDOB.SelectedDate.ToShortDateString();
+    }
+
+    protected void calDOD_SelectionChanged(object sender, EventArgs e)
+    {
+        txtCalDOD.Text = calDOD.SelectedDate.ToShortDateString();
+    }
 
     protected void btnAdd_Click(object sender, EventArgs e)
     {
@@ -87,13 +102,13 @@ public partial class PlotPreOrder : System.Web.UI.Page
         }
 
 
-        if (Validator.gotBadWords(ddcemetary.Text) == false
-            && Validator.IsitFilledin(txtcurrDate.Text) == true)
+        if (Validator.gotBadWords(ddcemetary.SelectedValue) == false
+            && Validator.IsitFilledin(ddcemetary.SelectedValue) == true)
 
         {
 
 
-            input.Cemetary = ddcemetary.Text;
+            input.Cemetary = ddcemetary.SelectedValue;
 
 
 
@@ -156,12 +171,12 @@ public partial class PlotPreOrder : System.Web.UI.Page
             return;
         }
 
-        if (Validator.gotBadWords(ddtitle.Text) == false && Validator.IsitFilledin(ddtitle.Text) == true)
+        if (Validator.gotBadWords(ddtitle.SelectedValue) == false && Validator.IsitFilledin(ddtitle.SelectedValue) == true)
 
         {
 
 
-            input.Title = ddtitle.Text;
+            input.Title = ddtitle.SelectedValue;
 
 
 
@@ -174,13 +189,13 @@ public partial class PlotPreOrder : System.Web.UI.Page
 
         }
 
-        //Not sure how to Validate with CalDOB.SelectedDate, See line 41
-        if (Validator.gotBadWords(calDOB.SelectedDate) == false && Validator.IsitFilledin(calDOB.SelectedDate) == true)
+        
+        if (Validator.gotBadWords(txtCalDOB.Text) == false && Validator.IsitFilledin(txtCalDOB.Text) == true)
 
         {
 
 
-            input.DateOB = calDOB.SelectedDate;
+            input.DateOB = txtCalDOB.Text;
 
 
 
@@ -192,12 +207,12 @@ public partial class PlotPreOrder : System.Web.UI.Page
             return;
         }
 
-        if (Validator.gotBadWords(calDOD.SelectedDate) == false && Validator.IsitFilledin(calDOD.SelectedDate) == true)
+        if (Validator.gotBadWords(txtCalDOD.Text) == false && Validator.IsitFilledin(txtCalDOD.Text) == true)
 
         {
 
 
-            input.DateOD = calDOD.SelectedDate;
+            input.DateOD = txtCalDOD.Text;
 
 
 
@@ -210,12 +225,25 @@ public partial class PlotPreOrder : System.Web.UI.Page
         }
 
         //not sure how to run check boxes
-        if (Validator.gotBadWords(checkVet.Text) == false && Validator.IsitFilledin(checkVet.Text) == true)
+        if (checkVet.Checked)
+
+        {
+
+            input.Vet = checkVet.Checked;
+
+        }
+
+        else
+        {
+            input.Vet = false;
+        }
+
+        if (Validator.gotBadWords(ddbranch.SelectedValue) == false)
 
         {
 
 
-            input.Vet = checkVet.Text;
+            input.Branch = ddbranch.SelectedValue;
 
 
 
@@ -227,29 +255,12 @@ public partial class PlotPreOrder : System.Web.UI.Page
             return;
         }
 
-        if (Validator.gotBadWords(ddbranch.Text) == false)
+        if (Validator.gotBadWords(ddstone.SelectedValue) == false && Validator.IsitFilledin(ddstone.SelectedValue) == true)
 
         {
 
 
-            input.Branch = ddbranch.Text;
-
-
-
-        }
-
-        else
-        {
-            lblFeedback.Text = "Validation Failed Try again.";
-            return;
-        }
-
-        if (Validator.gotBadWords(ddstone.Text) == false && Validator.IsitFilledin(ddstone.Text) == true)
-
-        {
-
-
-            input.Stone = ddstone.Text;
+            input.Stone = ddstone.SelectedValue;
 
 
 
@@ -285,225 +296,261 @@ public partial class PlotPreOrder : System.Web.UI.Page
 
     protected void btnUpdate_Click(object sender, EventArgs e)
     {
-       /* Plot input = new Plot();
-        input.Plot_ID = Convert.ToInt32(lblPlot_ID.Text)
+         Plot input = new Plot();
+        input.Plot_ID = Convert.ToInt32(lblPlot_ID.Text);
 
-        if (Validator.gotBadWords(txtcurrDate.Text) == false && Validator.IsitFilledin(txtcurrDate.Text) == true)
+         if (Validator.gotBadWords(txtcurrDate.Text) == false && Validator.IsitFilledin(txtcurrDate.Text) == true)
 
-        {
-            input.CurrDate = txtcurrDate.Text;
+         {
+             input.CurrDate = txtcurrDate.Text;
 
-        }
+         }
 
-        else
-        {
-            lblFeedback.Text = "Update Failed Try again.";
-            
+         else
+         {
+             lblFeedback.Text = "Update Failed Try again.";
 
-        }
 
+         }
 
-        if (Validator.gotBadWords(ddcemetary.Text) == false
-            && Validator.IsitFilledin(txtcurrDate.Text) == true)
 
-        {
+         if (Validator.gotBadWords(ddcemetary.SelectedValue) == false
+             && Validator.IsitFilledin(ddcemetary.SelectedValue) == true)
 
+         {
 
-            input.Cemetary = ddcemetary.Text;
 
+             input.Cemetary = ddcemetary.SelectedValue;
 
 
-        }
 
-        else
-        {
-            lblFeedback.Text = "Update Failed Try again.";
-            
-        }
+         }
 
-        if (Validator.gotBadWords(txtfirstName.Text) == false && Validator.IsitFilledin(txtfirstName.Text) == true)
+         else
+         {
+             lblFeedback.Text = "Update Failed Try again.";
 
-        {
+         }
 
+         if (Validator.gotBadWords(txtfirstName.Text) == false && Validator.IsitFilledin(txtfirstName.Text) == true)
 
-            input.FirstName = txtfirstName.Text;
+         {
 
 
+             input.FirstName = txtfirstName.Text;
 
-        }
 
-        else
-        {
-            lblFeedback.Text = "Update Failed Try again.";
-            
-        }
 
-        if (Validator.gotBadWords(txtmiddleName.Text) == false)
+         }
 
-        {
+         else
+         {
+             lblFeedback.Text = "Update Failed Try again.";
 
+         }
 
-            input.MiddleName = txtmiddleName.Text;
+         if (Validator.gotBadWords(txtmiddleName.Text) == false)
 
+         {
 
 
-        }
+             input.MiddleName = txtmiddleName.Text;
 
-        else
-        {
-            lblFeedback.Text = "Update Failed Try again.";
-            
-        }
 
-        if (Validator.gotBadWords(txtlastName.Text) == false && Validator.IsitFilledin(txtlastName.Text) == true)
 
-        {
+         }
 
+         else
+         {
+             lblFeedback.Text = "Update Failed Try again.";
 
-            input.LastName = txtlastName.Text;
+         }
 
+         if (Validator.gotBadWords(txtlastName.Text) == false && Validator.IsitFilledin(txtlastName.Text) == true)
 
+         {
 
-        }
 
-        else
-        {
-            lblFeedback.Text = "Update Failed Try again.";
-            
-        }
+             input.LastName = txtlastName.Text;
 
-        if (Validator.gotBadWords(ddtitle.Text) == false && Validator.IsitFilledin(ddtitle.Text) == true)
 
-        {
 
+         }
 
-            input.Title = ddtitle.Text;
+         else
+         {
+             lblFeedback.Text = "Update Failed Try again.";
 
+         }
 
+         if (Validator.gotBadWords(ddtitle.SelectedValue) == false && Validator.IsitFilledin(ddtitle.SelectedValue) == true)
 
-        }
+         {
 
-        else
-        {
-            lblFeedback.Text = "Update Failed Try again.";
-            
 
-        }
+             input.Title = ddtitle.SelectedValue;
 
-        //Not sure how to Validate with CalDOB.SelectedDate, See line 41
-        if (Validator.gotBadWords(calDOB.SelectedDate) == false && Validator.IsitFilledin(calDOB.SelectedDate) == true)
 
-        {
 
+         }
 
-            input.DateOB = calDOB.SelectedDate;
+         else
+         {
+             lblFeedback.Text = "Update Failed Try again.";
 
 
+         }
 
-        }
+         
+         if (Validator.gotBadWords(txtCalDOB.Text) == false && Validator.IsitFilledin(txtCalDOB.Text) == true)
 
-        else
-        {
-            lblFeedback.Text = "Update Failed Try again.";
-            
-        }
+         {
 
-        if (Validator.gotBadWords(calDOD.SelectedDate) == false && Validator.IsitFilledin(calDOD.SelectedDate) == true)
 
-        {
+             input.DateOB = txtCalDOB.Text;
 
 
-            input.DateOD = calDOD.SelectedDate;
 
+         }
 
+         else
+         {
+             lblFeedback.Text = "Update Failed Try again.";
 
-        }
+         }
 
-        else
-        {
-            lblFeedback.Text = "Update Failed Try again.";
-            
-        }
+         if (Validator.gotBadWords(txtCalDOD.Text) == false && Validator.IsitFilledin(txtCalDOD.Text) == true)
 
-        //not sure how to run check boxes
-        if (Validator.gotBadWords(checkVet.Text) == false && Validator.IsitFilledin(checkVet.Text) == true)
+         {
 
-        {
 
+             input.DateOD = txtCalDOD.Text;
 
-            input.Vet = checkVet.Text;
 
 
+         }
 
-        }
+         else
+         {
+             lblFeedback.Text = "Update Failed Try again.";
 
-        else
-        {
-            lblFeedback.Text = "Update Failed Try again.";
-            
-        }
+         }
 
-        if (Validator.gotBadWords(ddbranch.Text) == false)
+         
+         if (checkVet.Checked)
 
-        {
+         {
 
 
-            input.Branch = ddbranch.Text;
+             input.Vet = checkVet.Checked;
 
 
+         }
 
-        }
+         else
+         {
+            input.Vet = false;
 
-        else
-        {
-            lblFeedback.Text = "Update Failed Try again.";
-            
-        }
+         }
 
-        if (Validator.gotBadWords(ddstone.Text) == false && Validator.IsitFilledin(ddstone.Text) == true)
+         if (Validator.gotBadWords(ddbranch.SelectedValue) == false)
 
-        {
+         {
 
 
-            input.Stone = ddstone.Text;
+             input.Branch = ddbranch.SelectedValue;
 
 
 
-        }
+         }
 
-        else
-        {
-            lblFeedback.Text = "Update Failed Try again.";
-            
-        }
+         else
+         {
+             lblFeedback.Text = "Update Failed Try again.";
 
-        if (Validator.gotBadWords(txtnote.Text) == false)
+         }
 
-        {
+         if (Validator.gotBadWords(ddstone.SelectedValue) == false && Validator.IsitFilledin(ddstone.SelectedValue) == true)
 
+         {
 
-            input.Note = txtnote.Text;
 
+             input.Stone = ddstone.SelectedValue;
 
 
-        }
 
-        else
-        {
-            lblFeedback.Text = "Update Failed Try again.";
-            
-        }
+         }
 
-        lblFeedback.Text = input.UpdateAPlot(1).ToString() + " Plot Updated!";*/
+         else
+         {
+             lblFeedback.Text = "Update Failed Try again.";
+
+         }
+
+         if (Validator.gotBadWords(txtnote.Text) == false)
+
+         {
+
+
+             input.Note = txtnote.Text;
+
+
+
+         }
+
+         else
+         {
+             lblFeedback.Text = "Update Failed Try again.";
+
+         }
+
+         lblFeedback.Text = input.UpdateAPlot(input.Plot_ID).ToString() + " Plot Updated!";
     }
+
+
 
     protected void btnDelete_Click(object sender, EventArgs e)
     {
         Plot input = new Plot();
         input.Plot_ID = Convert.ToInt32(lblPlot_ID.Text);
 
-        lblFeedback.Text = input.DeleteAPlot(1).ToString() + " Person Deleted";
+        lblFeedback.Text = input.DeleteAPlot(input.Plot_ID).ToString() + " Person Deleted";
+
+        ClearAll();
     }
 
-    
+
+
+    public void ClearAll()
+    {
+        txtcurrDate.Text = string.Empty;
+        ddcemetary.SelectedValue = "0";
+        txtfirstName.Text = string.Empty;
+        txtmiddleName.Text = string.Empty;
+        txtlastName.Text = string.Empty;
+        ddtitle.SelectedValue = "0";
+        txtCalDOB.Text = string.Empty;
+        txtCalDOD.Text = string.Empty;
+        checkVet.Text = string.Empty;
+        ddbranch.SelectedValue = "0";
+        ddstone.SelectedValue = "0";
+        txtnote.Text = string.Empty;
+
+    }
+
+
+
+    protected void ddbranch_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if(ddbranch.SelectedValue != "0")
+        {
+
+            if (!checkVet.Checked)
+            {
+                lblFeedback.Text = "Must check Vet if you select a branch";
+                
+            }
+
+        }
+    }
 }

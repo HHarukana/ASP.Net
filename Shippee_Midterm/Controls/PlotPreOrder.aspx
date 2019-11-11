@@ -10,7 +10,8 @@
     <br />
 
     <asp:Label ID="lblcurrDate" runat="server" Text="Current Date: "></asp:Label>
-    <asp:TextBox ID="txtcurrDate" runat="server"></asp:TextBox>
+    <asp:Label ID="txtcurrDate" runat="server"></asp:Label>
+    
     <br />
 
     <br />
@@ -18,10 +19,10 @@
     <asp:Label ID="lblcemetary" runat="server" Text="Cemetary: "></asp:Label>
     <asp:DropDownList ID="ddcemetary" runat="server">
 
-        <asp:ListItem Selected="True" Value="default"> Choose One </asp:ListItem>
-        <asp:ListItem Value="listEGCemetary"> East Greenwhich Cemetary </asp:ListItem>
-        <asp:ListItem Value="listGlenCemetary"> Glenwood Cemetary </asp:ListItem>
-        <asp:ListItem Value="listQuidCemetary"> Quidnessett Memorial Cemetary </asp:ListItem>
+        <asp:ListItem Selected="True" Value="0" Text="Choose One" />
+        <asp:ListItem Value="East Greenwhich Cemetary" Text="East Greenwhich Cemetary" />  
+        <asp:ListItem Value="Glenwood Cemetary" Text="Glenwood Cemetary" />
+        <asp:ListItem Value="Quidnessett Memorial Cemetary" Text="Quidnessett Memorial Cemetary" /> 
 
     </asp:DropDownList>
     <br />
@@ -30,6 +31,7 @@
 
     <asp:Label ID="lblfirstName" runat="server" Text="First Name: "></asp:Label>
     <asp:TextBox ID="txtfirstName" runat="server"></asp:TextBox>
+    <asp:RequiredFieldValidator ID ="ReqFieldFirst" runat="server" ControlToValidate="txtfirstName" ErrorMessage="Must Have a First Name"></asp:RequiredFieldValidator>
     <br />
 
     <br />
@@ -42,6 +44,7 @@
 
     <asp:Label ID="lbllastName" runat="server" Text="Last Name: "></asp:Label>
     <asp:TextBox ID="txtlastName" runat="server"></asp:TextBox>
+    <asp:RequiredFieldValidator ID ="ReqFieldLast" runat="server" ControlToValidate="txtlastName" ErrorMessage="Must Have a Last Name"></asp:RequiredFieldValidator>
     <br />
 
     <br />
@@ -49,15 +52,15 @@
     <asp:Label ID="lbltitle" runat="server" Text="Title: "></asp:Label>
     <asp:DropDownList ID="ddtitle" runat="server">
 
-        <asp:ListItem Selected="True" Value="default"> Choose One </asp:ListItem>
-        <asp:ListItem Value="listGFather"> Grandfather </asp:ListItem>
-        <asp:ListItem Value="listGMother"> Grandmother </asp:ListItem>
-        <asp:ListItem Value="listFather"> Father </asp:ListItem>
-        <asp:ListItem Value="listMother"> Mother </asp:ListItem>
-        <asp:ListItem Value="listSon"> Son </asp:ListItem>
-        <asp:ListItem Value="listDaughter"> Daughter </asp:ListItem>
-        <asp:ListItem Value="listHusband"> Husband </asp:ListItem>
-        <asp:ListItem Value="listWife"> Wife </asp:ListItem>
+        <asp:ListItem Selected="True" Value="0" Text="Choose One" />
+        <asp:ListItem Value="1" Text="Grandfather" />
+        <asp:ListItem Value="2" Text="Grandmother" />
+        <asp:ListItem Value="3" Text="Father" />
+        <asp:ListItem Value="4" Text="Mother" />
+        <asp:ListItem Value="5" Text="Son" />
+        <asp:ListItem Value="6" Text="Daughter" />
+        <asp:ListItem Value="7" Text="Husband" /> 
+        <asp:ListItem Value="8" Text="Wife"/> 
         
 
 
@@ -67,28 +70,34 @@
     <br />
 
     <asp:Label ID="lblDOB" runat="server" Text="Date of Birth: "></asp:Label>
-    <asp:Calendar ID="calDOB" runat="server"></asp:Calendar>
+    <asp:Calendar ID="calDOB" runat="server"  OnSelectionChanged="calDOB_SelectionChanged"></asp:Calendar>
+    <asp:TextBox ID="txtCalDOB" runat="server"></asp:TextBox>
+    <asp:RequiredFieldValidator ID ="ReqFieldDOB" runat="server" ControlToValidate="txtcalDOB" ErrorMessage="Must Have a Date of Birth"></asp:RequiredFieldValidator>
+    <br />
+    <br />
     <br />
 
     <asp:Label ID="lblDOD" runat="server" Text="Date of Death: "></asp:Label>
-    <asp:Calendar ID="calDOD" runat="server"></asp:Calendar>
+    <asp:Calendar ID="calDOD" runat="server" OnSelectionChanged="calDOD_SelectionChanged"></asp:Calendar>
+    <asp:TextBox ID="txtCalDOD" runat="server"></asp:TextBox>
+    <asp:RequiredFieldValidator ID ="ReqFieldDOD" runat="server" ControlToValidate="txtcalDOB" ErrorMessage="Must Have a Date of Death"></asp:RequiredFieldValidator>
     <br />
 
     <asp:Label ID="lblvet" runat="server" Text="Military Vet: "></asp:Label>
-    <asp:CheckBox ID="checkVet" runat="server" />
+    <asp:CheckBox ID="checkVet" Checked="false" AutoPostBack="true" runat="server" />
     <br />
 
     <br />
 
     <asp:Label ID="lblbranch" runat="server" Text="Military Branch: "></asp:Label>
-    <asp:DropDownList ID="ddbranch" runat="server">
+    <asp:DropDownList ID="ddbranch"  runat="server" OnSelectedIndexChanged="ddbranch_SelectedIndexChanged">
 
-        <asp:ListItem Selected="True" Value="default"> Choose One </asp:ListItem>
-        <asp:ListItem Value="listArmy"> US Army </asp:ListItem>
-        <asp:ListItem Value="listAirForce"> Air Force </asp:ListItem>
-        <asp:ListItem Value="listNavy"> Navy </asp:ListItem>
-        <asp:ListItem Value="listMarine"> US Marine </asp:ListItem>
-        <asp:ListItem Value="listCoastGuard"> Coast Guard </asp:ListItem>
+        <asp:ListItem Selected="True" Value="0" Text="Choose One" /> 
+        <asp:ListItem Value="1" Text="US Army"/>
+        <asp:ListItem Value="2" Text="Air Force"/>
+        <asp:ListItem Value="3" Text="Navy" /> 
+        <asp:ListItem Value="4" Text="Us Marine" /> 
+        <asp:ListItem Value="5" Text="Coast Guard" /> 
 
     </asp:DropDownList>
     <br />
@@ -98,10 +107,10 @@
     <asp:Label ID="lblstone" runat="server" Text="Stone Type: "></asp:Label>
     <asp:DropDownList ID="ddstone" runat="server">
 
-        <asp:ListItem Selected="True" Value="default"> Choose One </asp:ListItem>
-        <asp:ListItem Value="listGranite"> Granite </asp:ListItem>
-        <asp:ListItem Value="listMarble"> Marble </asp:ListItem>
-        <asp:ListItem Value="listLimestone"> Limestone </asp:ListItem>
+        <asp:ListItem Selected="True" Value="0" Text="Choose One" /> 
+        <asp:ListItem Value="1" Text="Granite" /> 
+        <asp:ListItem Value="2" Text="Marble" /> 
+        <asp:ListItem Value="3" Text="Limestone" /> 
 
     </asp:DropDownList>
     <br />
@@ -110,6 +119,7 @@
 
     <asp:Label ID="lblnote" runat="server" Text="Note: "></asp:Label>
     <asp:TextBox ID="txtnote" runat="server"></asp:TextBox>
+    <asp:RequiredFieldValidator ID ="ReqFieldNote" runat="server" ControlToValidate="txtnote" ErrorMessage="Must Have something to write"></asp:RequiredFieldValidator>
     <br />
     
     <br />

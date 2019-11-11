@@ -19,7 +19,8 @@
         <div id ="header">
 
                  <asp:Image ID="headLogo" runat="server" ImageUrl="~/Images/headerLogo.png" />
-            
+            <br />
+           
 
                 
 
@@ -46,18 +47,17 @@
                 <br />
                 <a href="~/Default.aspx" runat="server">Home page</a>
                 <br />
-                <br />
-                <br />
-                <br />
-                <br />
+                
                 <a href="~/Buisness.aspx" runat="server">Who Are We?</a>
                 <br />
-                <br />
-                <br />
-                <br />
-                <br />
+               
                 <a href="~/Controls/Default.aspx" runat="server">Admin Login</a>
                 <br />
+                
+                <a href="~/Controls/PlotSearch.aspx" runat="server">Admin Search</a>
+                <br />
+               
+                <a href="~/Default.aspx"  ID="logout" runat="server" onserverclick ="logout_ServerClick">Logout</a>
 
             </div>
 

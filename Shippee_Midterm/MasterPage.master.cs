@@ -11,4 +11,11 @@ public partial class MasterPage : System.Web.UI.MasterPage
     {
 
     }
+
+    protected void logout_ServerClick(object sender, EventArgs e)
+    {
+        
+        Session.Abandon();
+        Response.Redirect("Default.aspx");
+    }
 }

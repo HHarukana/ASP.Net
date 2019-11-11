@@ -17,7 +17,7 @@ public class Plot
     private string title;
     private string DOB;
     private string DOD;
-    private string vet;
+    private bool vet;
     private string branch;
     private string stone;
     private string note;
@@ -232,25 +232,11 @@ public class Plot
 
     }
 
-    public string Vet
+    public Boolean Vet
     {
 
-        set
-        {
-            if (!Validator.gotBadWords(value))
-            {
-                vet = value;
-            }
-
-            else
-            {
-
-                vet = string.Empty;
-
-            }
-        }
-
         get { return vet; }
+        set { vet = value; }
 
     }
 
@@ -320,7 +306,7 @@ public class Plot
 
     }
 
-    public Plot(string plotID, string currDate, string cemetary, string firstName, string middleName, string lastName, string title, string DOB, string DOD, string vet, string branch, string stone, string note)
+    public Plot(string plotID, string currDate, string cemetary, string firstName, string middleName, string lastName, string title, string DOB, string DOD, bool vet, string branch, string stone, string note)
     {
         this.PlotID = plotID;
         this.CurrDate = currDate;
@@ -346,20 +332,20 @@ public class Plot
     public Plot()
     {
 
-        PlotID = "";
-        CurrDate = "";
-        Cemetary = "";
-        FirstName = "";
-        MiddleName = "";
-        LastName = "";
-        Title = "";
-        DateOB = "";
-        DateOD = "";
-        Vet = "";
-        Branch = "";
-        Stone = "";
-        Note = "";
-        feedback = "";
+        PlotID = string.Empty;
+        CurrDate = string.Empty;
+        Cemetary = string.Empty;
+        FirstName = string.Empty;
+        MiddleName = string.Empty;
+        LastName = string.Empty;
+        Title = string.Empty;
+        DateOB = string.Empty;
+        DateOD = string.Empty;
+        Vet = false;
+        Branch = string.Empty;
+        Stone = string.Empty;
+        Note = string.Empty;
+        feedback = string.Empty;
 
     }
 
@@ -430,21 +416,32 @@ public class Plot
 
         SqlCommand comm = new SqlCommand();
 
-        String strSQL = "SELECT plotID, cemetary, lastName FROM plot WHERE 0=0";
+        String strSQL = "SELECT plotID, cemetary, lastName FROM plot WHERE ";
 
-        if (FirstName.Length > 0)
-        {
-            strSQL += " AND cemetary LIKE @Cemetary";
-            comm.Parameters.AddWithValue("@Cemetary", "%" + cemetary + "%");
+        //if (Cemetary.Length > 0)
+        //{
+        //    strSQL += " cemetary LIKE ISNULL(@Cemetary, cemetary)";
+        //    comm.Parameters.AddWithValue("@Cemetary", "%" + cemetary + "%");
 
-        }
+        //}
 
-        if (LastName.Length > 0)
-        {
-            strSQL += " AND lastName LIKE @LastName";
-            comm.Parameters.AddWithValue("@LastName", "%" + lastName + "%");
+        //if (LastName.Length > 0)
+        //{
+        //    strSQL += " lastName LIKE ISNULL(@LastName, lastName)";
+        //    comm.Parameters.AddWithValue("@LastName", "%" + lastName + "%");
 
-        }
+        //}
+
+
+        strSQL += " cemetary LIKE ISNULL(@Cemetary, cemetary)";
+        comm.Parameters.AddWithValue("@Cemetary", "%" + Cemetary + "%");
+
+        strSQL += " AND lastName LIKE ISNULL(@LastName, lastName)";
+        comm.Parameters.AddWithValue("@LastName", "%" + LastName + "%");
+
+
+
+
 
         SqlConnection conn = new SqlConnection();
 
@@ -475,7 +472,7 @@ public class Plot
 
         string strConn = @connstring;
 
-        string sqlString = "Select PersonID, FirstName, MiddleName, LastName, Street, City, State, Zip, Number, EMail FROM Person WHERE PersonID = @PersonID;";
+        string sqlString = "Select plotID, currDate, cemetary, firstName, middlename, lastName, title, DOB, DOD, vet, branch, stone, note FROM plot WHERE plotID =  @PlotID;";
 
         conn.ConnectionString = strConn;
 
@@ -568,7 +565,7 @@ public class Plot
 
         catch (Exception err)
         {
-
+            throw new Exception(err.Message);
         }
 
         finally
